@@ -23,7 +23,7 @@ export const register =  async(req, res) => {
         } 
         return res.send({success: true, message: 'Succsefull you account is ready'})
       } catch (error) {
-        return res.status(500).json({ message: 'This username is taken' });
+        return res.status(404).json({ error: 'User name is arleady taken :('})
       }
     };
     

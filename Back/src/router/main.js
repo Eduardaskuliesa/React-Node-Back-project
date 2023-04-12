@@ -4,7 +4,7 @@ import { login } from "../auth/login.js";
 
 const router = express.Router()
 
-router.post("/register", register)
+router.post('/register', register)
 router.post('/login', login)
 
 
