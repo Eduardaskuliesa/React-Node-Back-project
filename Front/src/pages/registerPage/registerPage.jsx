@@ -5,7 +5,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -41,7 +40,7 @@ function RegisterPage() {
 
   React.useEffect(() => {
     if (success === true) {
-      navigate('/login');
+      navigate('/');
     }
   }, [success]);
 
@@ -75,7 +74,7 @@ function RegisterPage() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random)',
+          backgroundImage: 'url(https://source.unsplash.com/random/?city,night)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
