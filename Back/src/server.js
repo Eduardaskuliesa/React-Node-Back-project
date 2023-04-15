@@ -1,20 +1,33 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import config  from '../src/config.js';
-import mongoose from 'mongoose';
-import router from './router/main.js';
-
+const express = require("express")
+// const cors = require('cors')
+const morgan = require('morgan')
+const config = require('./config/config')
+const mongoose = require('mongoose')
+const router = require('./router/main.js')
+const cookieSession = require("cookie-session")
+const corsOptions = require("./config/cors.options")
+require('dotenv').config();
 
 const server = express();
 
 server.use(morgan('tiny'));
 server.use(express.json());
-server.use(cors())
+// server.use(cors(corsOptions))
 
-mongoose.connect(config.mongo.key, {
-}).then(() => {console.log("Connected")
-}).catch(e => console.log(e))
+server.use(
+  cookieSession({
+    name: 'newface-session',
+    secret: 'COOKIE_SECRET',
+    httpOnly: true
+  })
+)
+
+mongoose.connect(config.mongo.key)
+    .then(() => {
+        console.log('connected')
+    }).catch(e => {
+    console.log(e)
+})
 
 server.use("/", router)
 

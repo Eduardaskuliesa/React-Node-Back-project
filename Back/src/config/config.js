@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv'
+const dotenv = require('dotenv')
 
-dotenv.config();
+require('dotenv').config()
 
 const {
     SERVER_PORT,
@@ -14,7 +14,7 @@ if(!SERVER_PORT
  ){
     throw new Error("Please define constant in '.env' file")
  }
- const config = { 
+  const config ={ 
     server: {
         domain : SERVER_DOMAIN,
         port: SERVER_PORT,
@@ -24,4 +24,5 @@ if(!SERVER_PORT
         key: MONGO_KEY
     }
 }
-export default config
+module.exports = config
+

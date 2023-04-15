@@ -1,14 +1,11 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-use-before-define */
-/* eslint-disable react/no-unescaped-entities */
-import React from 'react';
-import { useDispatch } from 'react-redux';
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-no-bind */
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -17,42 +14,42 @@ import Typography from '@mui/material/Typography';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
-import { setUser } from '../../features/data';
-import loginScheme from '../../validation-schemas/login-validations-scheme';
+import registerSchema from '../validation-schemas/register-validation-scheme';
 
-function LoginPage() {
+function RegisterPage() {
   const nameRef = React.useRef();
   const passwordRef = React.useRef();
+  const passwordConfrim = React.useRef();
 
-  const [error, setError] = React.useState('');
-  const [success, setSuccess] = React.useState('');
+  const [message, setMessage] = React.useState('');
+  const [success, setSuccess] = React.useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginScheme),
+    resolver: yupResolver(registerSchema),
   });
+
+  const navigate = useNavigate();
 
   const formSubmitHandler = () => (
     auth()
   );
 
-  const navigate = useNavigate();
-
   React.useEffect(() => {
     if (success === true) {
-      navigate('/register');
+      navigate('/');
     }
   }, [success]);
 
+  // eslint-disable-next-line consistent-return
   function auth() {
     const user = {
       username: nameRef.current.value,
       password: passwordRef.current.value,
     };
-
     const options = {
       method: 'POST',
       headers: {
@@ -61,18 +58,16 @@ function LoginPage() {
       body: JSON.stringify(user),
     };
 
-    fetch('http://localhost:5002/login', options)
+    fetch('http://localhost:5002/register', options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setError((prevState) => prevState = data.message);
+        setMessage((prevState) => prevState = data.message);
         setSuccess((prevState) => prevState = data.success);
       });
   }
-
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
-      <CssBaseline />
       <Grid
         item
         xs={false}
@@ -81,76 +76,76 @@ function LoginPage() {
         sx={{
           backgroundImage: 'url(https://source.unsplash.com/random/?city,night)',
           backgroundRepeat: 'no-repeat',
-          backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6}>
+        <Box sx={{
+          my: 8,
+          mx: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login in
+            Register Form
           </Typography>
-          <Box component="form" onSubmit={handleSubmit(formSubmitHandler)} noValidate sx={{ mt: 1 }}>
+          <Box noValidate onSubmit={handleSubmit(formSubmitHandler)} component="form" sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
+              name="username"
               fullWidth
               id="username"
               label="Username"
-              name="username"
-              inputRef={nameRef}
               {...register('username')}
+              inputRef={nameRef}
               helperText={errors.username?.message}
 
+            />
+            {message === ''
+              ? ''
+              : <Typography>{message}</Typography>}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              {...register('password')}
+              inputRef={passwordRef}
+              helperText={errors.password?.message}
+              type="password"
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
+              label="Confrim Password"
+              {...register('confirmPassword')}
+              inputRef={passwordConfrim}
+              helperText={errors.confirmPassword?.message}
               type="password"
-              id="password"
-              autoComplete="current-password"
-              inputRef={passwordRef}
-              {...register('password')}
-              helperText={errors.password?.message}
             />
-            {error === ''
-              ? ''
-              : <Typography>{error}</Typography>}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login In
+              Create account
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="http://localhost:5173/register" variant="body2">
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Grid>
     </Grid>
+
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

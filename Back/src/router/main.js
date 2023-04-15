@@ -1,11 +1,17 @@
-import express from "express";
-import { register } from "../auth/register.js";
-import { login } from "../auth/login.js";
-
+const express = require('express')
 const router = express.Router()
+const { login , register, signout} = require('../controllers/auth.controller')
+const verifySignup = require('../middleware/verify.signup')
+const  authJwt = require('../middleware/authJwt.js')
+const { getUser, getAllUsers} = require('../controllers/user.controller.js')
 
-router.post('/register', register)
+
+router.post('/register', verifySignup.checkDubplicateUsername, register)
 router.post('/login', login)
+router.post('/signout', signout)
 
 
-export default router
+router.get('/getAllUsers', authJwt.verifyToken,  getAllUsers )
+router.get('/getUser/:id', authJwt.verifyToken, getUser)
+
+module.exports = router

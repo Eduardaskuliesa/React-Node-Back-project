@@ -1,9 +1,10 @@
-import * as yup from 'yup';
-const registrationValidationSchema = yup.object({
+const yup = require('yup')
+
+const registrationValidationSchema =  yup.object({
     username: yup.string()
     .required('username is required')
-    .min(4, 'ussername must have atleast 4 symbols')
-    .max(20, 'ussername cant have more than 20 symbols'),
+    .min(4, 'username must have atleast 4 symbols')
+    .max(20, 'username cant have more than 20 symbols'),
 
     password: yup.string()
     .required('password is required')
@@ -15,4 +16,4 @@ const registrationValidationSchema = yup.object({
 
 }).strict(true);
 
-export default registrationValidationSchema
+module.exports = registrationValidationSchema
