@@ -34,7 +34,7 @@ function LoginPage() {
 
   React.useEffect(() => {
     if (isSuccess) {
-      navigate('/profile');
+      navigate('/allUsers');
     } if (isError) {
       setError(message);
     }

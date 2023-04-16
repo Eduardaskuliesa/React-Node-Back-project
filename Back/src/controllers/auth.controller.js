@@ -48,12 +48,14 @@ module.exports = {
         })
         
         req.session.token = token
+        const users = await userSchema.find({}, { username: 1})
 
         res.status(200).send({
             success: true,
             username: username,
             secret: userExsits.secret,
-            token: token
+            token: token,
+            allUsers: users
         })
     },
 

@@ -11,7 +11,7 @@ router.post('/login', login)
 router.post('/signout', signout)
 
 
-router.get('/getAllUsers', authJwt.verifyToken,  getAllUsers )
+router.get('/getAllUsers',  getAllUsers )
 router.get('/getUser/:id', authJwt.verifyToken, getUser)
 
 module.exports = router
