@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
@@ -30,27 +31,27 @@ const getUserSlice = createSlice({
     reset: (state) => {
       state.isError = false;
       state.isSuccess = false;
-      state.isLoading = false;
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
       });
     builder
       .addCase(getUsers.fulfilled, (state, action) => {
         state.data = action.payload;
         state.isError = false;
         state.isSuccess = true;
-        state.isLoading = false;
+        state.loading = false;
       });
     builder
       .addCase(getUsers.rejected, (state, action) => {
         state.data = '';
         state.isError = true;
         state.isSuccess = false;
-        state.isLoading = false;
+        state.loading = false;
         state.message = action.payload;
       });
   },

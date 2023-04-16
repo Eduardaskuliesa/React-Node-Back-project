@@ -23,9 +23,37 @@ const getUsers = async () => {
   return response.data;
 };
 
+const updateUsername = async (data) => {
+  console.log(data);
+  const response = await api.patch(`/updateUsername/${data.secret}`, data);
+  if (response.data) {
+    console.log(response);
+  }
+  return response.data;
+};
+
+const updatePassword = async (data) => {
+  const response = await api.patch(`/updatePassword/${data.secret}`, data);
+  if (response.data) {
+    console.log(response.data);
+  }
+  return response.data;
+};
+
+const updatePhoto = async (data) => {
+  const response = await api.patch(`/updatePhoto/${data.secret}`, data);
+  if (response.data) {
+    console.log(response.data);
+  }
+  return response.data;
+};
+
 const authService = {
+  updateUsername,
   login,
   getUsers,
+  updatePassword,
+  updatePhoto,
 };
 
 export default authService;

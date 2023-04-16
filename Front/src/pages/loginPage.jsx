@@ -34,10 +34,11 @@ function LoginPage() {
 
   React.useEffect(() => {
     if (isSuccess) {
-      navigate('/allUsers');
+      navigate('/profile');
     } if (isError) {
       setError(message);
     }
+    return () => disp(reset());
   }, [isSuccess, isError, message]);
 
   const formSubmitHandler = (e) => {

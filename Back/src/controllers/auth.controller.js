@@ -12,9 +12,9 @@ const loginValidationSchema = require('../validation-schemas/login-validation')
 module.exports = {
     register: async(req, res) => {
 
-        const { error } = registrationValidationSchema.validate(req.body)
+        const { error } = registrationValidationSchema.validate(req.body ,{abortEarly: false})
 
-        const {password, username} = req.body
+        const {password, username, photo } = req.body
         
         const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -22,6 +22,7 @@ module.exports = {
             username,
             secret: uid.uid(),
             password: hashedPassword,
+            photo: ''
           });
           try {
             const newUser = await user.save();
@@ -35,7 +36,7 @@ module.exports = {
     login : async (req, res) => {
         const { error } = loginValidationSchema.validate(req.body)
 
-        const { username, password, secret } = req.body
+        const { username, password, secret} = req.body
         const userExsits = await userSchema.findOne({ username })
 
         if(!userExsits) return res.status(404).json({ message: "User Not found."})
@@ -55,7 +56,7 @@ module.exports = {
             username: username,
             secret: userExsits.secret,
             token: token,
-            allUsers: users
+            photo: userExsits.photo
         })
     },
 

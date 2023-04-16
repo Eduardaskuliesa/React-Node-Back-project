@@ -4,14 +4,19 @@ const checkDubplicateUsername = ( req, res, next) => {
   userSchema.findOne({
     username: req.body.username
   }).then((err, user) => {
-    if(err){
-        return res.status(500).send({ message: "Failed! Username is already in use!"});
+    let username
+    if("username" in req.body) {
+      username = req.body.username
     }
-    if(user){
-       return res.status(400).send({ message: "Failed! Username is already in use!"})
+    if (username.length < 5 || username.length > 20) return res.send({
+      message: "username min 5, max 20 length"
+    })
+    if(err){
+        return res.status(402).send({ message: "Failed! Username is already in use!"});
     }
     next()
-  })     
+  })
+
 }
 
 const verifySignup = {
