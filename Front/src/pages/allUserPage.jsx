@@ -4,27 +4,32 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import { getUsers } from '../features/allUsers';
+import { getUsers, reset } from '../features/allUsers';
+import { UsersCardGrid } from '../components/singleUserCard/styled';
 import SingleUserCard from '../components/singleUserCard/singleUserCard';
 
 function AllUserPage() {
   const disp = useDispatch();
-  const { data, isSuccess } = useSelector((state) => state.data);
-
+  const { users, isSuccess } = useSelector((state) => state.data);
   const [isloaded, setisLoaded] = useState(false);
 
   useEffect(() => {
     disp(getUsers());
+    return () => disp(reset());
+  }, []);
+
+  useEffect(() => {
     if (isSuccess) {
       setisLoaded(true);
     }
+    return () => disp(reset());
   }, [isSuccess]);
 
   return (
-    <>
+    <UsersCardGrid>
       {isloaded
-        ? data.users.map((user) => <Button key={user._id}>{user.username}</Button>) : ''}
-    </>
+        ? users.users.map((user) => <SingleUserCard key={user._id} {...user} />) : ''}
+    </UsersCardGrid>
 
   );
 }

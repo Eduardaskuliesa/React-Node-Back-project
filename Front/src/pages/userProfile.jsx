@@ -2,13 +2,13 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, height, width } from '@mui/system';
+import { Box } from '@mui/system';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
-  Stack, Typography, Card, CardActionArea,
-  CardContent, Button, CardActions, CardMedia, TextField, Avatar, IconButton,
+  Typography,
+  Button, TextField, Avatar, IconButton,
 } from '@mui/material';
 import passChangeScheme from '../validation-schemas/pass-change-validations-scheme';
 import { updateUsername, updatePassword, updatePhoto } from '../features/authSlice';
@@ -19,38 +19,34 @@ function UserProfile() {
     username, isError, message, secret, photo,
   } = useSelector((state) => state.auth);
   const disp = useDispatch();
-
-  console.log(secret);
+  const [diplayedImage, setDisplayedImage] = React.useState(photo);
+  const [imgUrl, setImgUrl] = React.useState('');
 
   React.useEffect(() => {
-    console.log(message);
     if (isError || message) {
-      console.log(typeof message);
       setError(message);
     }
   }, [isError, message]);
 
   const nameRef = React.useRef();
   const passRef = React.useRef();
-  const photoRef = React.useRef();
 
   const submitHandlerLogin = (e) => {
-    console.log(secret.toString());
     e.preventDefault();
     const data = { username: nameRef.current.value, secret: secret.toString() };
     disp(updateUsername(data));
   };
 
   const submitHandlerPass = (e) => {
-    e.preventDefault();
     const data = { password: passRef.current.value, secret: secret.toString() };
     disp(updatePassword(data));
   };
 
   const submitHandlerPhoto = (e) => {
     e.preventDefault();
-    const data = { photo: photoRef.current.value, secret: secret.toString() };
+    const data = { photo: imgUrl, secret: secret.toString() };
     disp(updatePhoto(data));
+    setDisplayedImage(imgUrl);
   };
   const {
     register,
@@ -140,7 +136,7 @@ function UserProfile() {
                 height: 150,
                 mt: 2,
               }}
-              src={photo}
+              src={diplayedImage}
             />
             <IconButton
               size="large"
@@ -159,7 +155,8 @@ function UserProfile() {
             margin="normal"
             type="text"
             label="Photo url"
-            inputRef={photoRef}
+            value={imgUrl}
+            onChange={(e) => setImgUrl(e.target.value)}
           />
 
         </Box>

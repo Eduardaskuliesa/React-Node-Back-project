@@ -53,7 +53,7 @@ function Navbar() {
                 <Button color="inherit" component={Link} to="/allUsers">
                   All Users
                 </Button>
-                <Button color="inherit" component={Link}>
+                <Button color="inherit" component={Link} to="/conversations">
                   All Conversations
                 </Button>
               </>

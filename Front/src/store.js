@@ -4,7 +4,7 @@ import getUserSlice from './features/allUsers';
 
 const store = configureStore({
   reducer: {
-    data: getUserSlice.reducer,
+    data: getUserSlice,
     auth: authSlice,
   },
 });

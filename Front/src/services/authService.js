@@ -14,15 +14,6 @@ const login = async (userData) => {
   return response.data;
 };
 
-const getUsers = async () => {
-  const response = await api.get('/getAllUsers');
-  if (response.data) {
-    console.log(response.data);
-    localStorage.setItem('users', JSON.stringify(response.data));
-  }
-  return response.data;
-};
-
 const updateUsername = async (data) => {
   console.log(data);
   const response = await api.patch(`/updateUsername/${data.secret}`, data);
@@ -48,12 +39,30 @@ const updatePhoto = async (data) => {
   return response.data;
 };
 
+const getUser = async (id) => {
+  const response = await api.get(`/getUser/${id}`);
+  if (response.data) {
+    console.log(response.data);
+  }
+  return response.data;
+};
+
+const getUsers = async () => {
+  const response = await api.get('/getAllUsers');
+  if (response.data) {
+    console.log(response.data);
+  }
+  return response.data;
+};
+
 const authService = {
   updateUsername,
   login,
   getUsers,
   updatePassword,
   updatePhoto,
+  getUser,
+
 };
 
 export default authService;
