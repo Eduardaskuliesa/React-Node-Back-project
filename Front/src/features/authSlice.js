@@ -115,6 +115,24 @@ const userSlice = createSlice({
         state.message = action.payload;
       });
     builder
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+      });
+    builder
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isSuccess = true;
+        state.isLoading = false;
+        state.message = action.payload.message;
+      });
+    builder
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.message = action.payload;
+      });
+    builder
       .addCase(updatePhoto.pending, (state) => {
         state.isLoading = true;
       });
@@ -136,5 +154,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { reset, setAllUsers } = userSlice.actions;
+export const { reset } = userSlice.actions;
 export default userSlice.reducer;
